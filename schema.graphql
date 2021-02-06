@@ -1,5 +1,13 @@
-type ExampleEntity @entity {
+type Issuance @entity {
+  "USDT tokens issuance tx hash"
   id: ID!
-  count: BigInt!
-  amount: BigInt! # uint256
+  "Issuance amount"
+  amount: BigInt!
+}
+
+type Redemption @entity {
+  "USDT tokens redeem tx hash"
+  id: ID!
+  "Redeem amount"
+  amount: BigInt!
 }
