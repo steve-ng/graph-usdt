@@ -3,18 +3,34 @@ import {
   Issue,
   Redeem,
 } from "../generated/TetherToken/TetherToken"
-import { Issuance, Redemption } from "../generated/schema"
+import { Issuance, TotalIssuance, Redemption, TotalRedemption } from "../generated/schema"
 
 export function handleIssue(event: Issue): void {
-  const entity = new Issuance(event.transaction.hash.toHex());
-  entity.amount = event.params.amount;
+  let issuanceEntity = new Issuance(event.transaction.hash.toHex());
+  issuanceEntity.amount = event.params.amount;
+  issuanceEntity.save();
 
-  entity.save();
+  let totalIssuanceEntity = TotalIssuance.load('1');
+  if (totalIssuanceEntity == null) {
+    totalIssuanceEntity = new TotalIssuance('1');
+    totalIssuanceEntity.amount = event.params.amount;
+  } else {
+    totalIssuanceEntity.amount = totalIssuanceEntity.amount.plus(event.params.amount);
+  }
+  totalIssuanceEntity.save();
 }
 
 export function handleRedeem(event: Redeem): void {
-  const entity = new Redemption(event.transaction.hash.toHex());
-  entity.amount = event.params.amount;
+  let redemptionEntity = new Redemption(event.transaction.hash.toHex());
+  redemptionEntity.amount = event.params.amount;
+  redemptionEntity.save();
 
-  entity.save();
+  let totalRedemptionEntity = TotalRedemption.load('1');
+  if (totalRedemptionEntity == null) {
+    totalRedemptionEntity = new TotalRedemption('1');
+    totalRedemptionEntity.amount = event.params.amount;
+  } else {
+    totalRedemptionEntity.amount = totalRedemptionEntity.amount.plus(event.params.amount);
+  }
+  totalRedemptionEntity.save();
 }

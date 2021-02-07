@@ -5,9 +5,26 @@ type Issuance @entity {
   amount: BigInt!
 }
 
+type TotalIssuance @entity {
+  "Only 1 id in existence"
+  id: ID!
+
+  "Issuance amount"
+  amount: BigInt!
+}
+
 type Redemption @entity {
   "USDT tokens redeem tx hash"
   id: ID!
   "Redeem amount"
+  amount: BigInt!
+}
+
+
+type TotalRedemption @entity {
+  "Only 1 id in existence"
+  id: ID!
+
+  "Issuance amount"
   amount: BigInt!
 }
